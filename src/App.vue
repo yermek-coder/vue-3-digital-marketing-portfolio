@@ -79,9 +79,9 @@ onUnmounted(() => {
       <Empty></Empty>
       <Gallery :device-type="deviceType"></Gallery>
       <Empty></Empty>
-      <Form></Form>
+      <Form :device-type="deviceType"></Form>
       <Empty></Empty>
-      <Links></Links>
+      <Links :device-type="deviceType"></Links>
     </main>
 </template>
 

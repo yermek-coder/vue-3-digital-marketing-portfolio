@@ -1,6 +1,6 @@
 <template>
-  <div id="contacts" class="contacts">
-    <a class="contacts__link" v-for="(link, index) in contacts" :key="index" :href="link.url">{{ link.title }}</a>
+  <div :class="{ 'contacts--desktop': deviceType === DEVICES.DESKTOP }" id="contacts" class="contacts">
+    <a v-for="(link, index) in contacts" :key="index" :href="link.url">{{ link.title }}</a>
   </div>
 </template>
 
@@ -11,7 +11,16 @@
 
   display: flex;
   flex-direction: column;
-  &__link {
+  &--desktop {
+    flex-direction: row;
+    margin: var(--margin);
+    max-width: var(--desktop-container-width);
+    a {
+      font-size: 10px;
+      width: 100%;
+    }
+  }
+  a {
     padding: var(--indent);
     display: flex;
     align-items: center;
@@ -19,11 +28,18 @@
     outline: var(--outline);
     font-family: 'Square721 BdEx BT';
     text-transform: uppercase;
+    cursor: pointer;
   }
 }
 </style>
 
 <script lang="ts" setup>
+import { DEVICES } from '../types/deviceTypes';
+
+defineProps<{
+  deviceType: DEVICES
+}>();
+
 const contacts = [
   {
     title: 'g-kairbekova@list.ru',

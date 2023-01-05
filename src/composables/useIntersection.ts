@@ -9,7 +9,7 @@ export default (targetClass: string, observerCallback: (entries: IntersectionObs
   const observer = new IntersectionObserver(observerCallback, observerOptions);
   
   onMounted(() => {
-    document.querySelectorAll(targetClass).forEach((i) => {
+    document.querySelectorAll(`.${targetClass}`).forEach((i) => {
       if (i) {
         observer.observe(i);
       }

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ref, onMounted } from 'vue';
+import useIntersection from '../composables/useIntersection';
 import { DEVICES } from '../types/deviceTypes';
 import image1 from '../assets/images/gallery/1.png';
 import story1 from '../assets/images/gallery/story1.jpg';
@@ -13,7 +15,7 @@ import video2Poster from '../assets/images/gallery/video2.jpg';
 import video3 from '../assets/images/gallery/video3.mp4';
 import video3Poster from '../assets/images/gallery/video3.jpg';
 
-defineProps<{
+const props = defineProps<{
   deviceType: DEVICES
 }>();
 
@@ -53,21 +55,48 @@ const slides = [
     url: story2,
     tag: 'div'
   },
-]
+];
+
+const activeSlideIndex = ref(0);
+const getIndex = (el: Element): number => {
+  const indexString = el.getAttribute('index');
+  return parseInt(indexString || '0');
+};
+const setActiveSlideIndex = (entries: IntersectionObserverEntry[]) => {
+  if (props.deviceType !== DEVICES.DESKTOP) return;
+  entries.forEach((entry) => {
+    if(entry.isIntersecting) {
+      const { target } = entry;
+      activeSlideIndex.value = getIndex(target as Element);
+    }
+  });
+};
+useIntersection('gallery__slides-inner__content', setActiveSlideIndex);
+
+const slidesWrapperEl = ref<Element | null>(null);
+const slideEls = ref<Element[]>([]);
+const pickSlide = (offset: -1 | 1) => {
+  slideEls.value[activeSlideIndex.value + offset]?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+};
+
+onMounted(() => {
+  slideEls.value = [...(slidesWrapperEl.value?.querySelectorAll('.gallery__slides-inner') || [])];
+});
 </script>
 
 <template>
   <div id="gallery" class="gallery" :class="{'gallery--desktop': deviceType === DEVICES.DESKTOP}">
     <div class="gallery__title"><h2 title="галерея" class="purple-text glitch">галерея</h2></div>
-    <div v-if="deviceType === DEVICES.DESKTOP" class="fallery__navigation">
-      <button>left</button>
-      <button>right</button>
+    <div v-if="deviceType === DEVICES.DESKTOP" class="gallery--desktop__navigation">
+      <button class="button button--left" @click="pickSlide(-1)" :is-disabled="activeSlideIndex === 0"></button>
+      <button class="button button--right" @click="pickSlide(1)" :is-disabled="activeSlideIndex === slides.length - 1"></button>
     </div>
-    <div class="gallery__slides slides">
-      <div class="slides__inner" v-for="(slide, index) in slides" :key="index">
+    <div ref="slidesWrapperEl" class="gallery__slides">
+      <div class="gallery__slides-inner" v-for="(slide, index) in slides" :key="index">
         <component
           :is="slide.tag"
-          class="slides__image"
+          class="gallery__slides-inner__content"
+          :index="index"
           :style="{
             backgroundImage: slide.tag === 'div' ? `url(${slide.url})` : null
           }"
@@ -77,7 +106,7 @@ const slides = [
         >
           <source :src="slide.url" type="video/mp4">
         </component>
-        <img src="../assets/images/purple-star.svg" alt="">
+        <img class="gallery__slides-inner__star" src="../assets/images/purple-star.svg" alt="">
       </div>
     </div>
   </div>
@@ -94,19 +123,49 @@ const slides = [
     .gallery__title {
       margin: 0;
     }
-    .gallery__navigation {
-      display: flex;
+    &__navigation {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       outline: var(--outline);
+      .button {
+        text-align: center;
+        align-self: center;
+        justify-self: center;
+        cursor: pointer;
+        width: 70%;
+        height: 70%;
+        &[is-disabled=true] {
+          opacity: 0.5;
+          pointer-events: none;
+        }
+        &--left {
+          background: url(../assets/images/arrow-left.svg) center/contain no-repeat;
+        }
+        &--right {
+          background: url(../assets/images/arrow-right.svg) center/contain no-repeat;
+        }
+      }
     } 
-    .slides {
+    .gallery__slides {
       width: auto !important;
       height: auto !important;
       aspect-ratio: 1;
       margin: 0 !important;
       grid-row: 1/3;
       grid-column: 2;
-      &__image {
-        width: calc(100% / 4) !important;
+      &-inner {
+        
+      }
+      &::-webkit-scrollbar {
+        height: 8px;
+        width: 8px;
+      }
+      &::-webkit-scrollbar-track, &::-webkit-scrollbar-corner {
+        opacity: 0;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: var(--color-gray);
+        border-radius: 100px;
       }
     }
   }
@@ -119,7 +178,7 @@ const slides = [
     flex-wrap: wrap;
     justify-content: center;
   }
-  .slides {
+  &__slides {
     background: url(../assets/images/ellipse.svg);
     outline: var(--outline);
     background-position: center;
@@ -137,27 +196,27 @@ const slides = [
 
     scroll-snap-type: x mandatory;
     scroll-snap-stop: always;
-    &__inner {
+    &-inner {
       width: calc(100vw - var(--double-indent));
       height: 100%;
-      flex: 0 0 calc(100vw - var(--double-indent));
+      flex: 0 0 100%;
       scroll-snap-align: center;
       display: flex;
       justify-content: center;
       align-items: center;
       position: relative;
-      img {
+      &__content {
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 80%;
+        height: 80%;
+      }
+      &__star {
         position: absolute;
         right: var(--indent);
         top: var(--indent);
       }
-    }
-    &__image {
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: contain;
-      width: 80%;
-      height: 80%;
     }
   }
 }

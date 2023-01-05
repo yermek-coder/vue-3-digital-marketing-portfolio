@@ -90,6 +90,9 @@ defineProps<{
     .hero__text, .hero__achive {
       padding: var(--indent) var(--desktop-indent);
     }
+    .hero__text {
+      grid-row: 1/3;
+    }
   }
   &__top {
     aspect-ratio: 1;
