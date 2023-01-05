@@ -16,7 +16,7 @@ const points = [
         <h1 class="glitch" title="дви">дви</h1>
         <h1 class="glitch" title="жение">жение</h1>
       </div>
-      <button class="spinning-button">Получить бесплатную<br>консультацию</button>
+      <a href="#form" class="spinning-button">Получить бесплатную<br>консультацию</a>
       <p>Повышение продаж и узнаваемости бренда,
         формирование положительного имиджа с помощью
         популярных социальных сетей
@@ -57,7 +57,7 @@ const points = [
       padding: 0 var(--desktop-indent);
       padding-bottom: 1.1em;
     }
-    button {
+    a {
       text-align: center;
       font-size: 10px;
       height: fit-content;

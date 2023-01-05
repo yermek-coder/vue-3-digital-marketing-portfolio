@@ -30,7 +30,7 @@ const submit = async () => {
 
 <template>
   <ThxModal v-model="isThxModalVisible"></ThxModal>
-  <div class="form" :class="{ 'form--desktop': deviceType === DEVICES.DESKTOP }">
+  <div id="form" class="form" :class="{ 'form--desktop': deviceType === DEVICES.DESKTOP }">
     <form @submit.prevent="submit">
       <h2 class="glitch" title="хотите так же?">хотите так же?</h2>
       <p>Между вами и результатом всего лишь эта форма. Оставь свои данные и я свяжусь с вами
