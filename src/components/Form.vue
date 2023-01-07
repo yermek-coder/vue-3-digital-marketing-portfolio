@@ -16,7 +16,7 @@ const form = reactive({
 });
 
 const submit = async () => {
-  const hostName = import.meta.env.VITE_HOSTNAME;
+  const hostName = window.location.protocol + '//' + window.location.hostname + '/';
   try {
     await axios.post(hostName, form);
     isThxModalVisible.value = true;

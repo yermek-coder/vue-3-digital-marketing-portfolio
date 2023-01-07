@@ -34,7 +34,7 @@ const deviceType = computed<DEVICES>(() => {
   return DEVICES.DESKTOP;
 });
 
-const resizeObserver = new ResizeObserver(async () => {
+const onResize = async () => {
   windowWidth.value = window.innerWidth;
   await nextTick();
   const rootEl = document.querySelector(':root') as HTMLElement;
@@ -48,16 +48,15 @@ const resizeObserver = new ResizeObserver(async () => {
   
   rootEl?.style?.setProperty('--margin', newMargin);
   rootEl?.style?.setProperty('--empty-height', `${newEmptyHeight}px`);
-});
+};
 
 onMounted(() => {
-  resizeObserver.observe(document.body);
+  window.addEventListener('resize', onResize)
 });
 
 onUnmounted(() => {
-  resizeObserver.disconnect();
+  window.removeEventListener('resize', onResize)
 })
-
 </script>
 
 <template>
