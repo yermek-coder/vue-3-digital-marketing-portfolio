@@ -29,16 +29,16 @@
     font-family: 'Square721 BdEx BT';
     text-transform: uppercase;
     cursor: pointer;
+    font-size: 0.9em;
   }
 }
 </style>
 
 <script lang="ts" setup>
+import { ComputedRef, inject } from 'vue';
 import { DEVICES } from '../types/deviceTypes';
 
-defineProps<{
-  deviceType: DEVICES
-}>();
+const deviceType: ComputedRef<DEVICES> | undefined = inject('deviceType');
 
 const contacts = [
   {

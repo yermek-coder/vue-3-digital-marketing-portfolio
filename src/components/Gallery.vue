@@ -1,7 +1,9 @@
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, ComputedRef } from 'vue';
 import useIntersection from '../composables/useIntersection';
+import { inject } from 'vue';
 import { DEVICES } from '../types/deviceTypes';
+
 import image1 from '../assets/images/gallery/1.png';
 import story1 from '../assets/images/gallery/story1.jpg';
 import story2 from '../assets/images/gallery/story2.jpg';
@@ -15,9 +17,7 @@ import video2Poster from '../assets/images/gallery/video2.jpg';
 import video3 from '../assets/images/gallery/video3.mp4';
 import video3Poster from '../assets/images/gallery/video3.jpg';
 
-const props = defineProps<{
-  deviceType: DEVICES
-}>();
+const deviceType: ComputedRef<DEVICES> | undefined = inject('deviceType');
 
 const slides = [
   {
@@ -63,7 +63,7 @@ const getIndex = (el: Element): number => {
   return parseInt(indexString || '0');
 };
 const setActiveSlideIndex = (entries: IntersectionObserverEntry[]) => {
-  if (props.deviceType !== DEVICES.DESKTOP) return;
+  if (deviceType?.value !== DEVICES.DESKTOP) return;
   entries.forEach((entry) => {
     if(entry.isIntersecting) {
       const { target } = entry;

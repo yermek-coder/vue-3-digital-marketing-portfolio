@@ -2,7 +2,7 @@
 import { DEVICES } from './types/deviceTypes';
 import Header from './components/Header.vue';
 import Heroe from './components/Heroe.vue';
-import { ref, onMounted, onUnmounted, computed, nextTick } from 'vue';
+import { ref, onMounted, onUnmounted, computed, nextTick, provide } from 'vue';
 import Benefits from './components/Benefits.vue';
 import Services from './components/Services.vue';
 import Empty from './components/Empty.vue';
@@ -33,6 +33,7 @@ const deviceType = computed<DEVICES>(() => {
   if (DEVICES.TABLET > windowWidth.value) return DEVICES.TABLET;
   return DEVICES.DESKTOP;
 });
+provide('deviceType', deviceType);
 
 const onResize = async () => {
   windowWidth.value = window.innerWidth;
@@ -68,19 +69,19 @@ onUnmounted(() => {
         <Empty></Empty>
       </template>
 
-      <Heroe :device-type="deviceType" class="intersection-target"></Heroe>
+      <Heroe class="intersection-target"></Heroe>
       <Empty></Empty>
-      <Benefits :device-type="deviceType"></Benefits>
+      <Benefits></Benefits>
       <Empty></Empty>
-      <Services :device-type="deviceType"></Services>
+      <Services></Services>
       <Empty></Empty>
-      <Networks :device-type="deviceType"></Networks>
+      <Networks></Networks>
       <Empty></Empty>
-      <Gallery :device-type="deviceType"></Gallery>
+      <Gallery></Gallery>
       <Empty></Empty>
-      <Form :device-type="deviceType"></Form>
+      <Form></Form>
       <Empty></Empty>
-      <Links :device-type="deviceType"></Links>
+      <Links></Links>
     </main>
 </template>
 

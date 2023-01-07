@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
+import { reactive, ref, ComputedRef, inject } from 'vue';
 import { vMaska } from "maska";
 import axios from 'axios';
 import ThxModal from './ThxModal.vue';
 import { DEVICES } from '../types/deviceTypes';
 
-defineProps<{
-  deviceType: DEVICES
-}>();
+const deviceType: ComputedRef<DEVICES> | undefined = inject('deviceType');
 
 const isThxModalVisible = ref(false);
 const form = reactive({

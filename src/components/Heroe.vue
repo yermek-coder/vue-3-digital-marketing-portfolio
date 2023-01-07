@@ -1,12 +1,10 @@
 <script setup lang="ts">
 // import useIntersection from '../composables/useIntersection';
-// import { ref } from 'vue';
+import { inject, ComputedRef } from 'vue';
 // import gsap from 'gsap';
 import { DEVICES } from '../types/deviceTypes';
 
-defineProps<{
-  deviceType: DEVICES
-}>();
+const deviceType: ComputedRef<DEVICES> | undefined = inject('deviceType');
 
 // const achievements = ref([
 //   {

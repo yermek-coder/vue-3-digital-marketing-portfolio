@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, inject, ComputedRef } from 'vue';
 import { DEVICES } from '../types/deviceTypes';
 
-defineProps<{
-  deviceType: DEVICES
-}>();
+const deviceType: ComputedRef<DEVICES> | undefined = inject('deviceType');
 
 const services = [
   {
