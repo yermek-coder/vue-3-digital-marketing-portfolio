@@ -52,11 +52,12 @@ const onResize = async () => {
 };
 
 onMounted(() => {
-  window.addEventListener('resize', onResize)
+  window.addEventListener('resize', onResize);
+  onResize();
 });
 
 onUnmounted(() => {
-  window.removeEventListener('resize', onResize)
+  window.removeEventListener('resize', onResize);
 })
 </script>
 
