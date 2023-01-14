@@ -22,6 +22,8 @@ app.use(cors(corsOptions));
 const HOSTNAME = process.env.VITE_HOSTNAME;
 const USERNAME = process.env.PLESK_USERNAME;
 const PASSWORD = process.env.PLESK_PASSWORD;
+const TARGET_EMAIL = process.env.TARGET_EMAIL;
+
 const transporter = nodemailer.createTransport({
     sendmail: true,
     newline: 'unix',
@@ -45,7 +47,7 @@ router.post('/',(req, res) => {
         const { name, whatsapp } = req.body;
         const data = {
             from: whatsapp,
-            to: "mynameisermek@gmail.com",
+            to: TARGET_EMAIL,
             subject: "Заявка",
             text: `Имя: ${name}; Номер: ${whatsapp}`,
         };
