@@ -1,5 +1,8 @@
 <script lang="ts" setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ComputedRef, inject } from 'vue';
+import { DEVICES } from '../types/deviceTypes';
+
+const deviceType: ComputedRef<DEVICES> | undefined = inject('deviceType');
 
 defineProps<{
   modelValue: boolean
@@ -50,6 +53,7 @@ defineProps<{
   h1 {
     font-size: 1.3em;
     margin-bottom: 32px;
+    flex-basis: 100%;
   }
   h1, p {
     text-align: center;
